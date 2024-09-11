@@ -6,14 +6,16 @@ from loguru import logger
 import sys
 import datetime
 
-# python .\scripts\data_collection.py 114 ./data/
+"""
+Запускать с такими параметрами:
+python ./scripts/data_collection.py 114 ./data/
+"""
 
 port_ = CONFIG['standard_port']
 
 drone_number = int(sys.argv[1])
 
 ip_ = f"10.1.100.{drone_number}"
-
 
 pioneer = Pioneer(name='pioneer', ip=ip_, mavlink_port=port_, logger=True)
 
@@ -50,7 +52,6 @@ drone.land()
 
 drone.stop()
 
-
 time.sleep(10)
 
 drone.disarm()
@@ -62,9 +63,11 @@ symbols_to_remove = ":"
 # current_time = current_time[:7]
 
 from os.path import isdir
+
 path = str(sys.argv[2])
 if not isdir(path):
     from os import makedirs
+
     makedirs(path, exist_ok=True)
 
 for symbol in symbols_to_remove:
