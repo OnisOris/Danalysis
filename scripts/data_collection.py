@@ -56,6 +56,13 @@ current_date = datetime.date.today().isoformat()
 current_time = str(datetime.datetime.now().time())
 symbols_to_remove = ":"
 # current_time = current_time[:7]
+
+from os.path import isdir
+path = "../data/"
+if not isdir(path):
+    from os import makedirs
+    makedirs(path, exist_ok=True)
+
 for symbol in symbols_to_remove:
     current_time = current_time.replace(symbol, "-")
-drone.save_data(f'../data/data_1_{drone_number}_{current_date}_{current_time}.csv')
+drone.save_data(f'{path}/data_1_{drone_number}_{current_date}_{current_time}.csv')
