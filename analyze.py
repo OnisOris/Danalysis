@@ -7,11 +7,15 @@ import pandas as pd
 import os
 from os.path import isdir
 import shutil
+import sys
 
-path = './data/'
+# python ./analyze.py ./data/ ./save/
+
+path = sys.argv[1]
+save = sys.argv[2]
 files = os.listdir(path)
 for file in files:
-    path2 = f'./save/{file[:-4]}/'
+    path2 = f'{save}{file[:-4]}/'
     if not isdir(path2):
         from os import makedirs
 

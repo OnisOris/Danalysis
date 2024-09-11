@@ -5,6 +5,9 @@ import time
 from loguru import logger
 import sys
 import datetime
+
+# python .\scripts\data_collection.py 114 ./data/
+
 port_ = CONFIG['standard_port']
 
 drone_number = int(sys.argv[1])
@@ -22,18 +25,19 @@ time.sleep(5)
 pioneer.arm()
 time.sleep(2)
 pioneer.takeoff()
+pioneer._mavlink_send_number = 1
 time.sleep(5)
 # pioneer.go_to_local_point(-3, 0, 1.5, 0)
-drone.goto([-3, 0.0, 1.5], apply=True)
+drone.goto([-4, 0.0, 1.5], apply=True)
 
 time.sleep(14)
 
 drone.set_coord_check()
-drone.set_v(ampl=2)
+drone.set_v(ampl=1)
 
 drone.body.v = [1, 0, 0]
 
-time.sleep(3)
+time.sleep(5)
 
 drone.body.v = [0, 0, 0]
 logger.debug("0 0 0 --------------------------------------------")
@@ -58,11 +62,11 @@ symbols_to_remove = ":"
 # current_time = current_time[:7]
 
 from os.path import isdir
-path = "./data/"
+path = str(sys.argv[2])
 if not isdir(path):
     from os import makedirs
     makedirs(path, exist_ok=True)
 
 for symbol in symbols_to_remove:
     current_time = current_time.replace(symbol, "-")
-drone.save_data(f'{path}/data_1_{drone_number}_{current_date}_{current_time}.csv')
+drone.save_data(f'{path}data_1_{drone_number}_{current_date}_{current_time}.csv')
