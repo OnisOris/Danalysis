@@ -58,7 +58,7 @@ symbols_to_remove = ":"
 # current_time = current_time[:7]
 
 from os.path import isdir
-path = "../data/"
+path = "./data/"
 if not isdir(path):
     from os import makedirs
     makedirs(path, exist_ok=True)
