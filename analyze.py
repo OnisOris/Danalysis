@@ -25,8 +25,8 @@ for file in files:
     df.plot(x='t', title=title)
     plt.xlabel('Время с начала инициализации [с]')
     plt.ylabel('Расстояние [м]')
-    plt.savefig(f'{path2}xyz_vx_vy_vz_{file}.png')
-    plt.show()
+    plt.savefig(f'{path2}xyz_vx_vy_vz.png')
+    # plt.show()
     ### График 2
     array = df.to_numpy()
     tu = array[:, 6]
@@ -79,8 +79,8 @@ for file in files:
     plt.legend()
 
     plt.tight_layout()
-    plt.savefig(f'{path2}reg_{file}.png')
-    plt.show()
+    plt.savefig(f'{path2}reg.png')
+    # plt.show()
 
     ### График 3
     # Построение графика
@@ -112,8 +112,8 @@ for file in files:
     plt.title('v_x (t) and a_x (t)')
     plt.legend()
     plt.grid(True)
-    plt.savefig(f'{path2}vx_ax_vxc_{file}.png')
+    plt.savefig(f'{path2}vx_ax_vxc.png')
     # Отображение графика
-    plt.show()
+    # plt.show()
     print(
         f"Среднее ускорение = {round(df_ddot_x.iloc[:, 0].mean(), 4)}, \n медианное - {round(df_ddot_x.iloc[:, 0].median(), 4)}")

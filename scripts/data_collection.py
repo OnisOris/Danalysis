@@ -1,5 +1,5 @@
 from SwarmControl import Drone
-from config import CONFIG
+from config2 import CONFIG
 from pioneer_sdk import Pioneer
 import time
 from loguru import logger
@@ -23,7 +23,7 @@ pioneer.arm()
 time.sleep(2)
 pioneer.takeoff()
 time.sleep(5)
-pioneer.go_to_local_point(-4.52890205, 0.06610023, 1.5, 0)
+# pioneer.go_to_local_point(-3, 0, 1.5, 0)
 drone.goto([-3, 0.0, 1.5], apply=True)
 
 time.sleep(14)
@@ -53,8 +53,9 @@ drone.disarm()
 drone.stop()
 
 current_date = datetime.date.today().isoformat()
-print(current_date)
-current_time = datetime.datetime.now().time()
-print(current_time)
-
+current_time = str(datetime.datetime.now().time())
+symbols_to_remove = ":"
+# current_time = current_time[:7]
+for symbol in symbols_to_remove:
+    current_time = current_time.replace(symbol, "-")
 drone.save_data(f'../data/data_1_{drone_number}_{current_date}_{current_time}.csv')
