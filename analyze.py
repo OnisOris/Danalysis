@@ -33,7 +33,6 @@ for file in files:
     plt.ylabel('Расстояние [м]')
     plt.savefig(f'{path2}all.png')
     ### График 2
-    # array = df.to_numpy()
     tu = array[:, 10]
     x = array[:, 0]
     y = array[:, 1]
