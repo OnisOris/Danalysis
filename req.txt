@@ -1,5 +1,4 @@
+pion @ git+https://github.com/OnisOris/pion
 matplotlib
-numpy==1.26.4
-pioneer_sdk @ git+https://github.com/OnisOris/pioneer_sdk
-SwarmControl @ git+https://github.com/OnisOris/SwarmControl
+numpy
 pandas
