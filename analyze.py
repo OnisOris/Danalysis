@@ -23,7 +23,6 @@ for file in files:
     array = np.load(f'{path}{file}')
     df = pd.DataFrame(array, columns=['x', 'y', 'z', 'vx', 'vy', 'Vz', 'vx_c', 'vy_c', 'vz_c', 'v_yaw_c', 't'])
     df.plot(x='t')
-    # df = pd.read_csv(f'{path}{file}', index_col=0)
     shutil.move(f'{path}{file}', f'{path2}{file}')
     title = f"{file}\n"
     df = df[1:]
@@ -33,7 +32,6 @@ for file in files:
     plt.xlabel('Время с начала инициализации [с]')
     plt.ylabel('Расстояние [м]')
     plt.savefig(f'{path2}all.png')
-    # plt.show()
     ### График 2
     # array = df.to_numpy()
     tu = array[:, 10]
