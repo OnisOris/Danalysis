@@ -116,7 +116,7 @@ for file in files:
     plt.grid(True)
     plt.savefig(f'{path2}velocity_acceleration.png')
     str_stat = (f"Mean acceleration = {round(df_ddot_x.iloc[:, 0].mean(), 4)}, "
-                f"\n Median acceleration - {round(df_ddot_x.iloc[:, 0].median(), 4)}")
+                f"\nMedian acceleration = {round(df_ddot_x.iloc[:, 0].median(), 4)}")
     with open(f"{path2}stat.txt", "w") as file_stat:
         file_stat.write(str_stat)
     print(str_stat)
