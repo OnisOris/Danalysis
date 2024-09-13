@@ -20,7 +20,10 @@ for file in files:
         from os import makedirs
 
         makedirs(path2, exist_ok=True)
-    df = pd.read_csv(f'{path}{file}', index_col=0)
+    array = np.load(f'{path}{file}')
+    df = pd.DataFrame(array, columns=['x', 'y', 'z', 'vx', 'vy', 'Vz', 'vx_c', 'vy_c', 'vz_c', 'v_yaw_c', 't'])
+    df.plot(x='t')
+    # df = pd.read_csv(f'{path}{file}', index_col=0)
     shutil.move(f'{path}{file}', f'{path2}{file}')
     title = f"{file}\n"
     df = df[1:]
@@ -29,11 +32,11 @@ for file in files:
     df.plot(x='t', title=title)
     plt.xlabel('Время с начала инициализации [с]')
     plt.ylabel('Расстояние [м]')
-    plt.savefig(f'{path2}xyz_vx_vy_vz.png')
+    plt.savefig(f'{path2}all.png')
     # plt.show()
     ### График 2
-    array = df.to_numpy()
-    tu = array[:, 6]
+    # array = df.to_numpy()
+    tu = array[:, 10]
     x = array[:, 0]
     y = array[:, 1]
 
@@ -100,24 +103,23 @@ for file in files:
     y_ddot = np.gradient(y_dot, tu)
 
     df_ddot_y = pd.DataFrame(np.vstack([y_ddot, array[:, 4], tu]).T, columns=['y_ddot', 'vy', 't'])
-    # df_ddot_y.plot(x='t', title=title)
 
     df_ddot_x = pd.DataFrame(np.vstack([x_ddot, array[:, 3], tu]).T, columns=['x_ddot', 'vx', 't'])
-    # df_ddot_x.plot(x='t', title=f"Среднее ускорение = {round(df_ddot_x.iloc[:, 0].mean(), 4)}, \n медианное - {round(df_ddot_x.iloc[:, 0].median(), 4)}")
 
     # Линия для x2
     plt.plot(df_ddot_x['t'], df_ddot_x['x_ddot'], label='x_ddot')
 
     # # Линия для x3
-    plt.plot(df['t'], df['Vx'], label='Vx (control)')
-
+    plt.plot(df['t'], df['vx_c'], label='Vx (control)')
+    plt.plot(df['t'], df['vx'], label='Vx (Locus)')
     # Настройки графика
     plt.xlabel('Time (s)')
-    plt.title('v_x (t) and a_x (t)')
+    plt.title('Graphic of accelerations and velocities')
     plt.legend()
     plt.grid(True)
-    plt.savefig(f'{path2}vx_ax_vxc.png')
-    # Отображение графика
-    # plt.show()
-    print(
-        f"Среднее ускорение = {round(df_ddot_x.iloc[:, 0].mean(), 4)}, \n медианное - {round(df_ddot_x.iloc[:, 0].median(), 4)}")
+    plt.savefig(f'{path2}velocity_acceleration.png')
+    str_stat = (f"Mean acceleration = {round(df_ddot_x.iloc[:, 0].mean(), 4)}, "
+                f"\n Median acceleration - {round(df_ddot_x.iloc[:, 0].median(), 4)}")
+    with open(f"{path2}stat.txt", "w") as file_stat:
+        file_stat.write(str_stat)
+    print(str_stat)
