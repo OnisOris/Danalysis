@@ -1,10 +1,10 @@
-from SwarmControl import Drone
 from config2 import CONFIG
-from pioneer_sdk import Pioneer
 import time
 from loguru import logger
 import sys
 import datetime
+from pion import Pion
+import numpy as np
 
 """
 Запускать с такими параметрами:
@@ -17,50 +17,42 @@ drone_number = int(sys.argv[1])
 
 ip_ = f"10.1.100.{drone_number}"
 
-pioneer = Pioneer(name='pioneer', ip=ip_, mavlink_port=port_, logger=True)
+pion = Pion(ip=ip_, mavlink_port=port_)
 
-drone = Drone(CONFIG, drone=pioneer, joystick_on=False, apply=True)
-if drone.body.real_point[2] < 0.5:
-    pioneer.reboot_board()
-time.sleep(5)
-
-pioneer.arm()
 time.sleep(2)
-pioneer.takeoff()
-pioneer._mavlink_send_number = 1
+
+pion.arm()
+time.sleep(2)
+pion.takeoff()
+pion._mavlink_send_number = 1
 time.sleep(5)
-# pioneer.go_to_local_point(-3, 0, 1.5, 0)
-drone.goto([-4, 0.0, 1.5], apply=True)
+pion.goto(-4, 0.0, 1.5)
 
 time.sleep(14)
 
-drone.set_coord_check()
-drone.set_v(ampl=1)
-
-drone.body.v = [1, 0, 0]
+pion.set_attitude_check()
+pion.set_v(ampl=1)
+pion.t_speed = np.array([1, 0, 0, 0])
 
 time.sleep(5)
 
-drone.body.v = [0, 0, 0]
+pion.t_speed = np.array([0, 0, 0, 0])
 logger.debug("0 0 0 --------------------------------------------")
 time.sleep(3)
 logger.debug("sleep --------------------------------------------")
-drone.speed_flag = False
-# drone.xyz_flag = False
+pion.speed_flag = False
 time.sleep(2)
-drone.land()
-
-drone.stop()
+pion.land()
 
 time.sleep(10)
 
-drone.disarm()
-drone.stop()
+pion.disarm()
+
+pion.check_attitude_flag = False
 
 current_date = datetime.date.today().isoformat()
 current_time = str(datetime.datetime.now().time())
 symbols_to_remove = ":"
-# current_time = current_time[:7]
 
 from os.path import isdir
 
@@ -72,4 +64,4 @@ if not isdir(path):
 
 for symbol in symbols_to_remove:
     current_time = current_time.replace(symbol, "-")
-drone.save_data(f'{path}data_1_{drone_number}_{current_date}_{current_time}.csv')
+pion.save_data(f'{path}data_1_{drone_number}_{current_date}_{current_time}.npy')
