@@ -2,3 +2,4 @@ pion @ git+https://github.com/OnisOris/pion
 matplotlib
 numpy
 pandas
+scikit-learn
