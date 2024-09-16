@@ -10,9 +10,12 @@ import shutil
 import sys
 
 # python ./analyze.py ./data/ ./save/
-
-path = sys.argv[1]
-save = sys.argv[2]
+if len(sys.argv) == 0:
+    path = './data/'
+    save = './save/'
+else:
+    path = sys.argv[1]
+    save = sys.argv[2]
 files = os.listdir(path)
 for file in files:
     path2 = f'{save}{file[:-4]}/'
