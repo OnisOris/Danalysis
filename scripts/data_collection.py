@@ -25,7 +25,7 @@ pion.arm()
 time.sleep(2)
 pion.takeoff()
 pion._mavlink_send_number = 1
-time.sleep(5)
+time.sleep(10)
 pion.goto(-4, 0.0, 1.5)
 
 time.sleep(14)
@@ -34,7 +34,7 @@ pion.set_attitude_check()
 pion.set_v(ampl=1)
 pion.t_speed = np.array([1, 0, 0, 0])
 
-time.sleep(5)
+time.sleep(7)
 
 pion.t_speed = np.array([0, 0, 0, 0])
 logger.debug("0 0 0 --------------------------------------------")
@@ -44,7 +44,7 @@ pion.speed_flag = False
 time.sleep(2)
 pion.land()
 
-time.sleep(10)
+time.sleep(13)
 
 pion.disarm()
 

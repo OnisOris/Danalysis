@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 
-class Dat:
-    def __init__(self):
-        pass
+
+def poly_reg(x: np.ndarray, t: np.ndarray, degree: int=25):
+    t_r = t.reshape(-1, 1)    
+    
     # Заготовка под будущий модуль
