@@ -17,7 +17,7 @@ pip install -r req.txt
 
 В случае, если данные мы будем собирать в папке data, то:
 
-Windows:
+Windows & Manjaro linux:
 ```Shell
 python ./scripts/data_collection.py 114 ./data/
 ```
@@ -31,12 +31,12 @@ python3 ./scripts/data_collection.py 114 ./data/
 В аргументах указываем ключи: -p - если нужно отображение графиков, -d [Описание] - ключ для описания происходящего.
 
 
-Windows:
+Windows & Manjaro linux:
 ```Shell
 python analyze.py -p -d "Описание, которое будет записано в файл dicription.txt и отображаться на графике"
 ```
 
 Ubuntu:
 ```Shell
-python analyze.py -p -d "Описание"
+python3 analyze.py -p -d "Описание"
 ```
