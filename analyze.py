@@ -12,7 +12,12 @@ import sys
 path = './data/'
 save = './save/'
 files = os.listdir(path)
-args = sys.argv 
+args = sys.argv
+discription = ''
+if len(args) > 1:
+       if "-d" in args:
+            discription = f"{args[args.index('-d') + 1]}"
+
 for file in files:
     path2 = f'{save}{file[:-4]}/'
     if not isdir(path2):
@@ -22,7 +27,7 @@ for file in files:
     array = np.load(f'{path}{file}')
     df = pd.DataFrame(array, columns=['x', 'y', 'z', 'vx', 'vy', 'Vz', 'vx_c', 'vy_c', 'vz_c', 'v_yaw_c', 't'])
     shutil.move(f'{path}{file}', f'{path2}{file}')
-    title = f"{file}\n"
+    title = f"{file}\n{discription}"
 
     ### График 1 (все данные)
     ax = df.plot(x='t', title=title, figsize=(10, 6))
@@ -104,7 +109,7 @@ for file in files:
 
     plt.xlabel('Время (с)')
     plt.ylabel('Скорость (м/с) и ускорение (м/с²)')
-    plt.title('График скоростей и ускорений')
+    plt.title(f'График скоростей и ускорений\n{discription}')
     plt.legend()
     plt.grid(True)
 
@@ -114,7 +119,6 @@ for file in files:
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.savefig(f'{path2}velocity_acceleration.png', dpi=300)
-    discription = ''
     if len(args) > 1:
        if "-p" in args:
             plt.show()

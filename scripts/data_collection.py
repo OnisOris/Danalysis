@@ -34,7 +34,7 @@ pion.set_attitude_check()
 pion.set_v(ampl=1)
 pion.t_speed = np.array([1, 0, 0, 0])
 
-time.sleep(7)
+time.sleep(3)
 
 pion.t_speed = np.array([0, 0, 0, 0])
 logger.debug("0 0 0 --------------------------------------------")
