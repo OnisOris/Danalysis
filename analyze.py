@@ -32,7 +32,7 @@ for file in files:
         makedirs(path2, exist_ok=True)
 
     array = np.load(f'{path}{file}')
-    df = pd.DataFrame(array, columns=['x', 'y', 'z', 'vx', 'vy', 'Vz', 'vx_c', 'vy_c', 'vz_c', 'v_yaw_c', 't'])
+    df = pd.DataFrame(array, columns=['x', 'y', 'z', 'vx', 'vy', 'Vz', 'vx_c', 'vy_c', 'pitch', 'roll', 'yaw', 'pitch_speed', 'roll_speed', 'yaw_speed', 'vz_c', 'v_yaw_c', 't'])
     if not without_moving:
         shutil.move(f'{path}{file}', f'{path2}{file}')
     title = f"{file}\n{discription}"
