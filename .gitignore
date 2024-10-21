@@ -163,4 +163,8 @@ cython_debug/
 data/
 save/
 test.py
+csv/
+vel/
+test2.py
+save.zip
 
