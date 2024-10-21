@@ -46,20 +46,19 @@ else:
 pion = Pion(ip=ip_, mavlink_port=port_)
 
 time.sleep(2)
-
+pion.led_control(255, 0, 255, 0)
 pion.arm()
 time.sleep(2)
 pion.takeoff()
-time.sleep(10)
-
+time.sleep(7)
+pion.set_v(ampl=1)
 if goto:
-    pion.goto(-4, 0.0, 1.5)
+    pion.goto_from_outside(-4, 0.0, 1.5)
 
-time.sleep(14)
-pion._mavlink_send_number = 1
+time.sleep(4)
+# pion._mavlink_send_number = 1
 
 pion.set_attitude_check()
-pion.set_v(ampl=1)
 pion.t_speed = np.array([1, 0, 0, 0])
 logger.debug(f"speed = {pion.t_speed}, time_of_exp = {time_of_exp}-----------------------------------")
 
@@ -93,3 +92,8 @@ if not isdir(path):
 for symbol in symbols_to_remove:
     current_time = current_time.replace(symbol, "-")
 pion.save_data(f'{path}data_1_{drone_number}_{current_date}_{current_time}.npy')
+pion.led_control(255, 0, 0, 0)
+pion.stop()
+# print(f"max pitch = {pion.pr[:, 0].max()}")
+
+# print(f"max roll = {pion.pr[:, 1].max()}")

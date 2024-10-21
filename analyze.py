@@ -14,9 +14,16 @@ save = './save/'
 files = os.listdir(path)
 args = sys.argv
 discription = ''
+without_acc = False
+without_moving = False
 if len(args) > 1:
-       if "-d" in args:
-            discription = f"{args[args.index('-d') + 1]}"
+    if "-d" in args:
+        discription = f"{args[args.index('-d') + 1]}"
+    if "-na" in args:
+        without_acc = True
+    if "-nm" in args:
+        without_moving = True
+
 
 for file in files:
     path2 = f'{save}{file[:-4]}/'
@@ -26,7 +33,8 @@ for file in files:
 
     array = np.load(f'{path}{file}')
     df = pd.DataFrame(array, columns=['x', 'y', 'z', 'vx', 'vy', 'Vz', 'vx_c', 'vy_c', 'vz_c', 'v_yaw_c', 't'])
-    shutil.move(f'{path}{file}', f'{path2}{file}')
+    if not without_moving:
+        shutil.move(f'{path}{file}', f'{path2}{file}')
     title = f"{file}\n{discription}"
 
     ### График 1 (все данные)
@@ -101,8 +109,9 @@ for file in files:
     ### График 3 (скорость и ускорение)
     plt.figure(figsize=(10, 6))
     vx_dot = np.gradient(vx_pred, tu)
-
-    plt.plot(tu, vx_dot, label='Ax (gradient(Vx))', color='blue', linestyle='--')
+    
+    if not without_acc:
+        plt.plot(tu, vx_dot, label='Ax (gradient(Vx))', color='blue', linestyle='--')
     plt.plot(tu, vx_pred, label='Vx (Reg)', color='orange')
     plt.plot(df['t'], df['vx_c'], label='Vx (control)', color='red')
     plt.plot(df['t'], df['vx'], label='Vx (Locus)', color='green')
