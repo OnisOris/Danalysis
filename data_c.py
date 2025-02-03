@@ -2,7 +2,7 @@ import time
 from loguru import logger
 import sys
 import datetime
-from pion import Pion
+from pion import Spion, Pion
 import numpy as np
 
 
@@ -24,26 +24,34 @@ time_of_exp = 3
 goto = False
 ip_ = None
 port_ = 5656
+spion = False
 for arg in args:
-    if arg == '-n':
-        drone_number = args[args.index(arg)+1]
-    if arg == '-p':
-        path = args[args.index(arg)+1]
-    if arg == '-s':
-        time_of_exp = float(args[args.index(arg)+1])
-    if arg == '-g':
-        goto = True
-    if arg == '-ip':
-        ip_= args[args.index(arg)+1] 
-    if arg == '-port':
-        port_ = int(args[args.index(arg)+1]) 
+    match arg:
+        case '-n':
+            drone_number = args[args.index(arg)+1]
+        case '-p':
+            path = args[args.index(arg)+1]
+        case '-s':
+            time_of_exp = float(args[args.index(arg)+1])
+        case '-g':
+            goto = True
+        case '-ip':
+            ip_= args[args.index(arg)+1] 
+        case '-port':
+            port_ = int(args[args.index(arg)+1])
+        case '-sim':
+            spion = True
+
 
 if ip_ is None:
     ip_ = f"10.1.100.{drone_number}"
 else:
     ip_ = f"{ip_}{drone_number}"
+if spion:
+    pion = Spion(ip=ip_, mavlink_port=port_, logger=True)
+else:
+    pion = Pion(ip=ip_, mavlink_port=port_, logger=True)
 
-pion = Pion(ip=ip_, mavlink_port=port_)
 pion.check_attitude_flag = True
 time.sleep(2)
 pion.led_control(255, 0, 255, 0)
@@ -51,20 +59,19 @@ pion.arm()
 time.sleep(2)
 pion.takeoff()
 time.sleep(7)
-pion.set_v(ampl=1)
+pion.set_v()
 if goto:
     pion.goto_from_outside(-4, 0.0, 1.5, 0)
 
 time.sleep(4)
-# pion._mavlink_send_number = 1
 
-pion.t_speed = np.array([1, 0, 0, 0])
+pion.t_speed = np.array([-1, 0, 0, 0])
 logger.debug(f"speed = {pion.t_speed}, time_of_exp = {time_of_exp}-----------------------------------")
 
 time.sleep(time_of_exp)
 
 pion.t_speed = np.array([0, 0, 0, 0])
-logger.debug(f"speed = {pion.t_speed}, count = {pion.count} end--------------------------------------------")
+logger.debug(f"speed = {pion.t_speed}, end--------------------------------------------")
 time.sleep(3)
 logger.debug("sleep --------------------------------------------")
 pion.speed_flag = False
